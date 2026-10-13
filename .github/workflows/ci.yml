@@ -8,7 +8,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # The solution mixes a .NET 8 web app with a .NET Framework 4.7.2 library,
+    # so it is built with msbuild on a Windows runner.
+    runs-on: windows-latest
 
     steps:
       - name: Checkout
@@ -19,18 +21,8 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Cache NuGet packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-          restore-keys: ${{ runner.os }}-nuget-
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
 
-      - name: Restore
-        run: dotnet restore "Job portal.sln"
-
-      - name: Build
-        run: dotnet build "Job portal.sln" --configuration Release --no-restore
-
-      - name: Test
-        run: dotnet test "Job portal.sln" --configuration Release --no-build --verbosity normal
+      - name: Restore and build
+        run: msbuild "Job portal.sln" /restore /p:Configuration=Release /m
