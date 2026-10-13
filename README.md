@@ -1,4 +1,5 @@
 # Job Portal
+[![CI](https://github.com/sajidkamaljoy/Job-portal/actions/workflows/ci.yml/badge.svg)](https://github.com/sajidkamaljoy/Job-portal/actions/workflows/ci.yml)
 
 An ASP.NET Core MVC (.NET 8) web app started as a job portal.
 
